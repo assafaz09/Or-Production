@@ -7,7 +7,7 @@ import { categoriesData } from "../lib/categories";
 import { getCloudinaryUrl } from "../lib/cloudinary";
 import ShoppingCartIcon from "./icons/ShoppingCartIcon";
 
-const Navbar = ({ cartItemCount = 0 }) => {
+const Navbar = () => {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);

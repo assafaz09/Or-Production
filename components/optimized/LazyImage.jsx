@@ -46,8 +46,6 @@ const LazyImage = ({
   const {
     optimizedSrc,
     srcSet,
-    isLoading: imgLoadedState,
-    hasError: imgHasError,
     handleLoad,
     handleError,
     blurDataUrl,

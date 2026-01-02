@@ -20,14 +20,13 @@ const OptimizedCloudinaryImage = ({
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
-  const {
-    optimizedSrc,
-    srcSet,
-    isLoading: _imgLoading,
-    hasError: imgHasError,
-    handleLoad,
-    handleError,
-  } = useImageLoader({ src, width, height, quality, format });
+  const { optimizedSrc, srcSet, handleLoad, handleError } = useImageLoader({
+    src,
+    width,
+    height,
+    quality,
+    format,
+  });
 
   const handleClick = (e) => {
     if (onClick) {

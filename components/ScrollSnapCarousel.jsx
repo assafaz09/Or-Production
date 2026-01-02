@@ -11,7 +11,7 @@ export default function ScrollSnapCarousel({ children, className = "" }) {
         ref={containerRef}
         className="overflow-x-auto overflow-y-hidden flex gap-6 snap-x snap-mandatory scroll-smooth scrollbar-hide"
       >
-        {React.Children.map(children, (child, index) => (
+        {React.Children.map(children, (child) => (
           <div data-carousel-item className="snap-center shrink-0">
             {child}
           </div>
