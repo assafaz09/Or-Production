@@ -108,7 +108,9 @@ export default function CartPage() {
       const cartItemsText = cartItems
         .map(
           (item) =>
-            `${item.name} x${item.quantity} - ₪${(item.price * item.quantity).toLocaleString("he-IL")}`
+            `${item.name} x${item.quantity} - ₪${(
+              item.price * item.quantity
+            ).toLocaleString("he-IL")}`
         )
         .join("\n");
 

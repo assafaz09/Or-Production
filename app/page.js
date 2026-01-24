@@ -846,20 +846,17 @@ export default function HomePage() {
 
                   // שלח את הפרטים ל-Formspree
                   try {
-                    const res = await fetch(
-                      "https://formspree.io/f/xzdeolrq",
-                      {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                          name,
-                          phone: tel,
-                          email,
-                          message: msg,
-                          source: "homepage",
-                        }),
-                      }
-                    );
+                    const res = await fetch("https://formspree.io/f/xzdeolrq", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        name,
+                        phone: tel,
+                        email,
+                        message: msg,
+                        source: "homepage",
+                      }),
+                    });
                     if (!res.ok) throw new Error("שליחה נכשלה");
 
                     setSuccess(true);
