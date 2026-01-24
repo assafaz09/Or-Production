@@ -104,29 +104,56 @@ export default function CartPage() {
     });
 
     try {
-      // Send data to the new API
-      const response = await fetch("/api/quote-request", {
+      // פורמט הפרטים של העגלה להודעה
+      const cartItemsText = cartItems
+        .map(
+          (item) =>
+            `${item.name} x${item.quantity} - ₪${(item.price * item.quantity).toLocaleString("he-IL")}`
+        )
+        .join("\n");
+
+      const messageContent = `
+הזמנה חדשה מעגלת הקניות:
+
+פרטי הלקוח:
+- שם: ${customerName}
+- טלפון: ${customerTel}
+- אימייל: ${customerEmail}
+
+פרטי האירוע:
+- סוג אירוע: ${eventType}
+- תאריך האירוע: ${eventDate}
+- מספר אורחים: ${guestsCount}
+
+פרטי ההזמנה:
+${cartItemsText}
+
+סה"כ: ₪${(totalPrice * 1.17).toLocaleString("he-IL")} (כולל מע"מ)
+
+הערות נוספות:
+${customerNotes || "אין"}
+      `;
+
+      // שלח את הפרטים ל-Formspree
+      const response = await fetch("https://formspree.io/f/xzdeolrq", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          customerName,
-          customerTel,
-          customerEmail,
-          customerNotes,
-          eventDate,
-          eventType,
-          guestsCount,
-          cartItems,
-          totalPrice,
+          name: customerName,
+          email: customerEmail,
+          phone: customerTel,
+          subject: `הזמנה חדשה - ${eventType}`,
+          message: messageContent,
+          cartItemsCount: cartItems.length,
+          totalPrice: totalPrice,
+          source: "cart_page",
         }),
       });
 
-      const result = await response.json();
-
       if (!response.ok) {
-        throw new Error(result.error || "שגיאה בשליחת הבקשה");
+        throw new Error("שגיאה בשליחת ההודעה");
       }
 
       // הצג הודעת הצלחה
