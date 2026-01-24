@@ -844,23 +844,23 @@ export default function HomePage() {
                   }
                   setLoading(true);
 
-                  // שלח את הפרטים ל-n8n webhook (החלף את ה-URL בשלך!)
+                  // שלח את הפרטים ל-Formspree
                   try {
                     const res = await fetch(
-                      "http://localhost:5678/webhook/069e4ecd-24f8-41f3-af7a-c7e89b960f97",
+                      "https://formspree.io/f/xzdeolrq",
                       {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
                           name,
-                          tel,
+                          phone: tel,
                           email,
-                          msg,
+                          message: msg,
                           source: "homepage",
                         }),
                       }
                     );
-                    if (!res.ok) throw new Error("שליחה ל-n8n נכשלה");
+                    if (!res.ok) throw new Error("שליחה נכשלה");
 
                     setSuccess(true);
                     setName("");
