@@ -1,31 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { trackViewContent, trackCustomEvent } from "../../lib/facebookPixel";
 import { getCloudinaryUrl } from "../../lib/cloudinary";
 import Navbar from "../../components/Navbar";
 import CopyLinkButton from "../../components/shared/CopyLinkButton";
 import WhatsAppButton from "../../components/shared/WhatsAppButton";
-import RealisticiPhoneFrame from "../../components/shared/RealisticiPhoneFrame";
-import {
-  usePageTracking,
-  useScrollTracking,
-} from "../../hooks/usePageTracking";
 
 export default function TestimonialsPage() {
   const router = useRouter();
-
-  // עקוב אחרי צפייה בעמוד ההמלצות
-  useEffect(() => {
-    trackViewContent("Testimonials Page", "testimonials", 0, "ILS");
-
-    trackCustomEvent("TestimonialsPageView", {
-      page_name: "testimonials",
-      testimonials_count: 15,
-      has_video: true,
-    });
-  }, []);
 
   const testimonialImages = [
     {
@@ -126,17 +108,7 @@ export default function TestimonialsPage() {
     },
   ];
 
-  const toggleMute = () => {
-    const newMuteState = !isMuted;
-    setIsMuted(newMuteState);
-
-    // עקוב אחרי שינויי ווליום
-    trackCustomEvent("VideoVolumeChange", {
-      video_name: "testimonials_hero",
-      action: newMuteState ? "mute" : "unmute",
-      page: "testimonials",
-    });
-  };
+  // Video mute state not currently used in current design
 
   return (
     <div className="min-h-screen bg-black">

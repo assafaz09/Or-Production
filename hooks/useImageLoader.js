@@ -3,7 +3,13 @@
 import { useState, useMemo, useCallback } from "react";
 import { getCloudinaryUrl } from "../lib/cloudinary";
 
-export const useImageLoader = ({ src, width, height, quality = "auto", format = "auto" } = {}) => {
+export const useImageLoader = ({
+  src,
+  width,
+  height,
+  quality = "auto",
+  format = "auto",
+} = {}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
@@ -34,7 +40,10 @@ export const useImageLoader = ({ src, width, height, quality = "auto", format = 
       return sizes
         .map((scale) => {
           const scaledWidth = Math.round(baseWidth * scale);
-          return `${getOptimizedUrl(scaledWidth, height && Math.round(height * scale))} ${scaledWidth}w`;
+          return `${getOptimizedUrl(
+            scaledWidth,
+            height && Math.round(height * scale)
+          )} ${scaledWidth}w`;
         })
         .join(", ");
     },
@@ -50,7 +59,10 @@ export const useImageLoader = ({ src, width, height, quality = "auto", format = 
     setHasError(true);
   }, []);
 
-  const optimizedSrc = useMemo(() => getOptimizedUrl(width || 400, height || 300), [getOptimizedUrl, width, height]);
+  const optimizedSrc = useMemo(
+    () => getOptimizedUrl(width || 400, height || 300),
+    [getOptimizedUrl, width, height]
+  );
 
   const blurDataUrl = useMemo(() => getOptimizedUrl(10, 10), [getOptimizedUrl]);
 

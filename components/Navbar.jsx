@@ -107,17 +107,7 @@ const Navbar = () => {
               בלוגים ומאמרים
             </button>
             <button
-              onClick={() => {
-                // עקוב אחרי לחיצה על המלצות בתפריט
-                if (typeof window !== "undefined" && window.fbq) {
-                  window.fbq("track", "CustomEvent", {
-                    event_name: "NavigationClick",
-                    menu_item: "testimonials",
-                    location: "desktop_navbar",
-                  });
-                }
-                router.push("/testimonials");
-              }}
+              onClick={() => router.push("/testimonials")}
               className="text-gray-300 hover:text-purple-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
             >
               המלצות
@@ -218,14 +208,6 @@ const Navbar = () => {
             </button>
             <button
               onClick={() => {
-                // עקוב אחרי לחיצה על המלצות בתפריט הנייד
-                if (typeof window !== "undefined" && window.fbq) {
-                  window.fbq("track", "CustomEvent", {
-                    event_name: "NavigationClick",
-                    menu_item: "testimonials",
-                    location: "mobile_navbar",
-                  });
-                }
                 router.push("/testimonials");
                 setIsMenuOpen(false);
               }}

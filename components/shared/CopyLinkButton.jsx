@@ -3,21 +3,12 @@
 import { useCallback } from "react";
 import useCopyToClipboard from "../../hooks/useCopyToClipboard";
 
-const CopyLinkButton = ({ pageName = "unknown" }) => {
+const CopyLinkButton = () => {
   const { copy, copied } = useCopyToClipboard(2000);
 
   const copyToClipboard = useCallback(async () => {
-    const ok = await copy(window.location.href);
-    if (ok) {
-      if (typeof window !== "undefined" && window.fbq) {
-        window.fbq("track", "CustomEvent", {
-          event_name: "CopyLink",
-          page_url: window.location.href,
-          page_name: pageName,
-        });
-      }
-    }
-  }, [copy, pageName]);
+    await copy(window.location.href);
+  }, [copy]);
 
   return (
     <button

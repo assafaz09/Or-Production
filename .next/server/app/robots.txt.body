@@ -1,0 +1,9 @@
+User-Agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_next/
+Disallow: /private/
+
+Host: https://orproductions.co.il
+Sitemap: https://orproductions.co.il/sitemap.xml

@@ -1,21 +1,13 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { trackCustomEvent, trackViewContent } from "../../lib/facebookPixel";
 import Navbar from "../../components/Navbar";
 import { getCloudinaryUrl } from "../../lib/cloudinary";
 import CopyLinkButton from "../../components/shared/CopyLinkButton";
 import WhatsAppButton from "../../components/shared/WhatsAppButton";
-import { usePageTracking } from "../../hooks/usePageTracking";
 
 export default function BlogPage() {
   const router = useRouter();
-
-  // עקוב אחרי צפייה בעמוד הבלוג
-  useEffect(() => {
-    trackViewContent("Blog Page", "blog", 0, "ILS");
-  }, []);
 
   const blogPosts = [
     {

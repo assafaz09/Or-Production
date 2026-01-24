@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import CopyLinkButton from "../../../components/shared/CopyLinkButton";
 import { trackViewContent, trackCustomEvent } from "../../../lib/facebookPixel";
 import { getCloudinaryUrl } from "../../../lib/cloudinary";

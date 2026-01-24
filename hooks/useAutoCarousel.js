@@ -10,9 +10,13 @@ export const useAutoCarousel = () => {
     if (!container) return 0;
     const firstItem = container.querySelector("[data-carousel-item]");
     const gap = parseFloat(
-      getComputedStyle(container).columnGap || getComputedStyle(container).gap || "0"
+      getComputedStyle(container).columnGap ||
+        getComputedStyle(container).gap ||
+        "0"
     );
-    const width = firstItem ? firstItem.getBoundingClientRect().width : container.clientWidth;
+    const width = firstItem
+      ? firstItem.getBoundingClientRect().width
+      : container.clientWidth;
     return width + gap;
   }, []);
 

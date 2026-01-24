@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { getAllAttractions } from "../../../lib/categories";
 import { getCloudinaryUrl } from "../../../lib/cloudinary";
-import { trackViewContent, trackAddToCart } from "../../../lib/facebookPixel";
 import CopyLinkButton from "../../../components/shared/CopyLinkButton";
 
 // Copy Link Button Component
@@ -61,7 +60,6 @@ export default function AttractionPage() {
   }
 
   const addToCart = () => {
-    const currentPrice = getCurrentPrice();
     let attractionToAdd = { ...attraction };
 
     // If guest options exist, add selected option info
@@ -100,9 +98,6 @@ export default function AttractionPage() {
 
     // Save updated cart to localStorage
     localStorage.setItem("cart", JSON.stringify(cart));
-
-    // עקוב אחרי הוספה לעגלה
-    trackAddToCart(currentPrice * quantity, "ILS");
 
     // Show success message
     const guestInfo = attraction.guestOptions
@@ -448,7 +443,7 @@ export default function AttractionPage() {
                   attr.id !== attraction.id
               )
               .slice(0, 3)
-              .map((relatedAttraction, index) => (
+              .map((relatedAttraction) => (
                 <div
                   key={relatedAttraction.id}
                   className="bg-gray-800 rounded-lg shadow-lg overflow-hidden cursor-pointer transform hover:scale-105 transition-transform duration-300"
@@ -517,16 +512,6 @@ export default function AttractionPage() {
         href="https://wa.me/972544299492"
         target="_blank"
         rel="noopener noreferrer"
-        onClick={() => {
-          // עקוב אחרי לחיצה על WhatsApp
-          if (typeof window !== "undefined" && window.fbq) {
-            window.fbq("track", "CustomEvent", {
-              event_name: "WhatsAppClick",
-              source: "floating_button",
-              page: "attraction_page",
-            });
-          }
-        }}
         className="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white p-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-110"
         title="צור קשר ב-WhatsApp"
       >

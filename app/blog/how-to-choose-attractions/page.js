@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import CopyLinkButton from "../../../components/shared/CopyLinkButton";
 import { getCloudinaryUrl } from "../../../lib/cloudinary";
 import Navbar from "../../../components/Navbar";

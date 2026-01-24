@@ -56,7 +56,9 @@ export default function CartPage() {
     if (newQuantity < 1) return;
 
     const updatedCart = cartItems.map((item) =>
-      (item.cartItemId || item.id) === itemId ? { ...item, quantity: newQuantity } : item
+      (item.cartItemId || item.id) === itemId
+        ? { ...item, quantity: newQuantity }
+        : item
     );
 
     setCartItems(updatedCart);
@@ -69,7 +71,9 @@ export default function CartPage() {
 
   // Remove item
   const removeItem = (itemId) => {
-    const updatedCart = cartItems.filter((item) => (item.cartItemId || item.id) !== itemId);
+    const updatedCart = cartItems.filter(
+      (item) => (item.cartItemId || item.id) !== itemId
+    );
     setCartItems(updatedCart);
     calculateTotal(updatedCart);
     localStorage.setItem("cart", JSON.stringify(updatedCart));
@@ -143,7 +147,7 @@ export default function CartPage() {
 
   // Handle quote request
   const handleQuoteRequest = () => {
-  if (cartItems.length === 0) {
+    if (cartItems.length === 0) {
       alert("העגלה ריקה. אנא הוסף פריטים לפני בקשת הצעת מחיר.");
       return;
     }
@@ -191,29 +195,29 @@ export default function CartPage() {
                   </button>
                 </div>
               ) : (
-              <div className="space-y-4">
-                {cartItems.map((item) => (
-                  <div
+                <div className="space-y-4">
+                  {cartItems.map((item) => (
+                    <div
                       key={item.cartItemId || item.id}
                       className="flex items-center justify-between bg-gray-800 rounded-lg p-3 sm:p-4"
-                  >
-                    {/* Item Image */}
+                    >
+                      {/* Item Image */}
                       <div className="flex-shrink-0 mr-3 sm:mr-4">
-                      <img
-                        src={
-                          getCloudinaryUrl(item.images[0]) ||
-                          "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=500"
-                        }
-                        alt={item.name}
+                        <img
+                          src={
+                            getCloudinaryUrl(item.images[0]) ||
+                            "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=500"
+                          }
+                          alt={item.name}
                           className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg"
-                      />
-                    </div>
+                        />
+                      </div>
 
-                    {/* Item Details */}
+                      {/* Item Details */}
                       <div className="flex-1 min-w-0 mr-3 sm:mr-4">
                         <h3 className="text-lg font-semibold text-white truncate mb-1">
-                        {item.name}
-                      </h3>
+                          {item.name}
+                        </h3>
                         {item.guestInfo && (
                           <p className="text-purple-300 text-sm mb-1">
                             {item.guestInfo}
@@ -223,103 +227,109 @@ export default function CartPage() {
                           {item.category}
                         </p>
                         <div className="text-purple-400 font-bold text-lg">
-                        ₪{item.price}
+                          ₪{item.price}
+                        </div>
                       </div>
-                    </div>
 
-                    {/* Quantity Controls */}
+                      {/* Quantity Controls */}
                       <div className="flex items-center justify-center space-x-2 rtl:space-x-reverse bg-gray-700 rounded-lg px-3 py-2 mr-3 sm:mr-4">
-                      <button
-                        onClick={() =>
-                            updateQuantity(item.cartItemId || item.id, item.quantity - 1)
-                        }
+                        <button
+                          onClick={() =>
+                            updateQuantity(
+                              item.cartItemId || item.id,
+                              item.quantity - 1
+                            )
+                          }
                           className="w-8 h-8 rounded-full bg-gray-600 hover:bg-gray-500 flex items-center justify-center transition-all duration-200 hover:scale-105"
                           title="הפחת כמות"
-                      >
-                        <svg
-                          className="w-4 h-4 text-white"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M20 12H4"
-                          />
-                        </svg>
-                      </button>
+                          <svg
+                            className="w-4 h-4 text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M20 12H4"
+                            />
+                          </svg>
+                        </button>
 
                         <span className="text-white font-bold text-lg min-w-[2.5rem] text-center bg-gray-800 rounded-lg px-2 py-1">
-                        {item.quantity}
-                      </span>
+                          {item.quantity}
+                        </span>
 
-                      <button
-                        onClick={() =>
-                            updateQuantity(item.cartItemId || item.id, item.quantity + 1)
-                        }
+                        <button
+                          onClick={() =>
+                            updateQuantity(
+                              item.cartItemId || item.id,
+                              item.quantity + 1
+                            )
+                          }
                           className="w-8 h-8 rounded-full bg-gray-600 hover:bg-gray-500 flex items-center justify-center transition-all duration-200 hover:scale-105"
                           title="הוסף כמות"
-                      >
-                        <svg
-                          className="w-4 h-4 text-white"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
+                          <svg
+                            className="w-4 h-4 text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
                               d="M12 4v16m8-8H4"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-
-                    {/* Item Total */}
-                      <div className="text-right mr-3 sm:mr-4">
-                      <div className="text-lg font-bold text-white">
-                        ₪{item.price * item.quantity}
+                            />
+                          </svg>
+                        </button>
                       </div>
-                    </div>
 
-                    {/* Remove Button */}
-                    <button
+                      {/* Item Total */}
+                      <div className="text-right mr-3 sm:mr-4">
+                        <div className="text-lg font-bold text-white">
+                          ₪{item.price * item.quantity}
+                        </div>
+                      </div>
+
+                      {/* Remove Button */}
+                      <button
                         onClick={() => removeItem(item.cartItemId || item.id)}
                         className="text-red-400 hover:text-red-300 transition-colors p-2 hover:bg-red-900/20 rounded-lg"
                         title="הסר פריט"
-                    >
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                ))}
-              </div>
+                        <svg
+                          className="w-5 h-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  ))}
+                </div>
               )}
 
               {/* Clear Cart Button */}
               {cartItems.length > 0 && (
-              <div className="mt-6 pt-6 border-t border-gray-700">
-                <button
-                  onClick={clearCart}
-                  className="text-red-400 hover:text-red-300 transition-colors"
-                >
-                  נקה את הסל
-                </button>
-              </div>
+                <div className="mt-6 pt-6 border-t border-gray-700">
+                  <button
+                    onClick={clearCart}
+                    className="text-red-400 hover:text-red-300 transition-colors"
+                  >
+                    נקה את הסל
+                  </button>
+                </div>
               )}
             </div>
           </div>
@@ -337,39 +347,39 @@ export default function CartPage() {
                 </div>
               ) : (
                 <>
-              {/* Price Breakdown */}
-              <div className="space-y-3 mb-6">
-                <div className="flex justify-between text-gray-300">
-                  <span>סך הפריטים:</span>
-                  <span>
+                  {/* Price Breakdown */}
+                  <div className="space-y-3 mb-6">
+                    <div className="flex justify-between text-gray-300">
+                      <span>סך הפריטים:</span>
+                      <span>
                         {cartItems.reduce(
                           (sum, item) => sum + item.quantity,
                           0
                         )}
-                  </span>
-                </div>
+                      </span>
+                    </div>
 
-                <div className="flex justify-between text-gray-300">
-                  <span>מחיר כולל:</span>
-                  <span>₪{totalPrice}</span>
-                </div>
+                    <div className="flex justify-between text-gray-300">
+                      <span>מחיר כולל:</span>
+                      <span>₪{totalPrice}</span>
+                    </div>
 
-                <div className="flex justify-between text-gray-300">
-                      <span>מע"מ (18%):</span>
+                    <div className="flex justify-between text-gray-300">
+                      <span>מע״מ (18%):</span>
                       <span>₪{Math.round(totalPrice * 0.18)}</span>
-                </div>
+                    </div>
 
-                <div className="border-t border-gray-700 pt-3">
-                  <div className="flex justify-between text-xl font-bold text-white">
-                    <span>סה"כ לתשלום:</span>
-                    <span>₪{Math.round(totalPrice * 1.17)}</span>
+                    <div className="border-t border-gray-700 pt-3">
+                      <div className="flex justify-between text-xl font-bold text-white">
+                        <span>סה״כ לתשלום:</span>
+                        <span>₪{Math.round(totalPrice * 1.17)}</span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
 
-              {/* Quote Request Button */}
-              <button
-                onClick={handleQuoteRequest}
+                  {/* Quote Request Button */}
+                  <button
+                    onClick={handleQuoteRequest}
                     className="w-full btn-primary text-lg py-4"
                   >
                     קבל הצעת מחיר
@@ -377,7 +387,7 @@ export default function CartPage() {
 
                   {/* Additional Info */}
                   <div className="mt-6 text-sm text-gray-400">
-                    <p>• המחירים אינם כוללים מע"מ</p>
+                    <p>• המחירים אינם כוללים מע״מ</p>
                     <p>• נציג יצור איתך קשר תוך 24 שעות</p>
                     <p>• המחירים כפופים לשינויים</p>
                   </div>
@@ -511,16 +521,20 @@ export default function CartPage() {
                 </h4>
                 <div className="space-y-2 text-sm text-gray-300">
                   {cartItems.map((item) => (
-                    <div key={item.cartItemId || item.id} className="flex justify-between">
+                    <div
+                      key={item.cartItemId || item.id}
+                      className="flex justify-between"
+                    >
                       <span>
-                        {item.name} {item.guestInfo && `(${item.guestInfo})`} x{item.quantity}
+                        {item.name} {item.guestInfo && `(${item.guestInfo})`} x
+                        {item.quantity}
                       </span>
                       <span>₪{item.price * item.quantity}</span>
                     </div>
                   ))}
                   <div className="border-t border-gray-600 pt-2 mt-2">
                     <div className="flex justify-between font-semibold text-white">
-                      <span>סה"כ:</span>
+                      <span>סה״כ:</span>
                       <span>₪{Math.round(totalPrice * 1.17)}</span>
                     </div>
                   </div>
@@ -540,39 +554,39 @@ export default function CartPage() {
                   type="submit"
                   disabled={isSubmitting}
                   className="flex-1 btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isSubmitting ? (
-                  <div className="flex items-center justify-center">
-                    <svg
-                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
-                    </svg>
+                >
+                  {isSubmitting ? (
+                    <div className="flex items-center justify-center">
+                      <svg
+                        className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
                       שולח...
-                  </div>
-                ) : (
+                    </div>
+                  ) : (
                     "שלח בקשת הצעת מחיר"
-                )}
-              </button>
+                  )}
+                </button>
               </div>
             </form>
-            </div>
           </div>
+        </div>
       )}
 
       {/* Success Modal */}

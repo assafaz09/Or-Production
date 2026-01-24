@@ -7,11 +7,15 @@ export const useCartCount = () => {
 
   useEffect(() => {
     const updateCartCount = () => {
-      const savedCart = typeof window !== "undefined" ? localStorage.getItem("cart") : null;
+      const savedCart =
+        typeof window !== "undefined" ? localStorage.getItem("cart") : null;
       if (savedCart) {
         try {
           const cart = JSON.parse(savedCart);
-          const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+          const totalItems = cart.reduce(
+            (sum, item) => sum + (item.quantity || 0),
+            0
+          );
           setCartCount(totalItems);
         } catch (err) {
           setCartCount(0);

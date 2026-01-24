@@ -5,22 +5,16 @@ import { useState, useEffect } from "react";
 import { categoriesData } from "../lib/categories";
 import { getCloudinaryUrl } from "../lib/cloudinary";
 import {
-  trackContact,
   trackCustomEvent,
   trackTimeOnPage,
   trackScrollDepth,
   trackVideoView,
   trackLinkClick,
-  trackLead,
 } from "../lib/facebookPixel";
 import Navbar from "../components/Navbar";
-import Marquee from "../components/Marquee";
-import ScrollSnapCarousel from "../components/ScrollSnapCarousel";
 import InfiniteCarousel from "./components/InfiniteCarousel.jsx";
 import CopyLinkButton from "../components/shared/CopyLinkButton";
 import WhatsAppButton from "../components/shared/WhatsAppButton";
-import RealisticiPhoneFrame from "../components/shared/RealisticiPhoneFrame";
-import { usePageTracking, useScrollTracking } from "../hooks/usePageTracking";
 import { BusinessSchema, FAQSchema } from "../components/seo/StructuredData";
 
 export default function HomePage() {
@@ -31,14 +25,7 @@ export default function HomePage() {
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [pageLoadTime, setPageLoadTime] = useState(Date.now());
 
-
-
-
-
-
-  
   // FAQ data for structured data
   const faqData = [
     {
@@ -72,7 +59,7 @@ export default function HomePage() {
 
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-  }, [pageLoadTime]);
+  }, []);
 
   // מעקב אחרי עומק גלילה
   useEffect(() => {
@@ -98,61 +85,7 @@ export default function HomePage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!name.trim() || !tel.trim() || !email.trim()) {
-      alert("נא למלא את כל הפרטים");
-      return;
-    }
-    setLoading(true);
-
-    // עקוב אחרי יצירת קשר
-    trackContact();
-
-    try {
-      // Send to the new quote-request API
-      const res = await fetch("/api/quote-request", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          customerName: name,
-          customerTel: tel,
-          customerNotes: msg,
-          cartItems: [], // Empty cart for contact form
-          totalPrice: 0,
-        }),
-      });
-
-      if (!res.ok) throw new Error("שליחה נכשלה");
-
-      setSuccess(true);
-      setName("");
-      setTel("");
-      setMsg("");
-      setEmail("")
-
-      // עקוב אחרי הצלחה בשליחה
-      trackCustomEvent("ContactFormSubmitted", {
-        form_type: "contact",
-        success: true,
-      });
-
-      // עקוב אחרי יצירת ליד
-      trackLead("Contact Form", 1, "website");
-    } catch (err) {
-      console.error(err);
-      alert("שגיאה בשליחה");
-
-      // עקוב אחרי כישלון בשליחה
-      trackCustomEvent("ContactFormSubmitted", {
-        form_type: "contact",
-        success: false,
-        error: err.message,
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Contact form removed - use quote request API instead
 
   // עקוב אחרי לחיצות על כפתורים
   const handleButtonClick = (buttonType) => {
@@ -913,17 +846,20 @@ export default function HomePage() {
 
                   // שלח את הפרטים ל-n8n webhook (החלף את ה-URL בשלך!)
                   try {
-                    const res = await fetch("http://localhost:5678/webhook/069e4ecd-24f8-41f3-af7a-c7e89b960f97", {
-                      method: "POST",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify({
-                        name,
-                        tel,
-                        email,
-                        msg,
-                        source: "homepage"
-                      }),
-                    });
+                    const res = await fetch(
+                      "http://localhost:5678/webhook/069e4ecd-24f8-41f3-af7a-c7e89b960f97",
+                      {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          name,
+                          tel,
+                          email,
+                          msg,
+                          source: "homepage",
+                        }),
+                      }
+                    );
                     if (!res.ok) throw new Error("שליחה ל-n8n נכשלה");
 
                     setSuccess(true);
@@ -931,7 +867,7 @@ export default function HomePage() {
                     setTel("");
                     setEmail("");
                     setMsg("");
-                  } catch (err) {
+                  } catch {
                     alert("שליחה נכשלה, נסה/י שוב.");
                   } finally {
                     setLoading(false);

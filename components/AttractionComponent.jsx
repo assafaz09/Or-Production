@@ -2,7 +2,6 @@
 
 import React, { useState, useCallback } from "react";
 import { getCloudinaryUrl } from "../lib/cloudinary";
-import { trackAddToCart } from "../lib/facebookPixel";
 
 const Attraction = ({ attraction, onAddToCart, animationDelay = 0 }) => {
   const router = useRouter();
@@ -23,7 +22,6 @@ const Attraction = ({ attraction, onAddToCart, animationDelay = 0 }) => {
     (e) => {
       e.stopPropagation();
 
-      const currentPrice = getCurrentPrice();
       let attractionToAdd = { ...attraction };
 
       // If guest options exist, add selected option info
@@ -63,16 +61,15 @@ const Attraction = ({ attraction, onAddToCart, animationDelay = 0 }) => {
       // Save updated cart to localStorage
       localStorage.setItem("cart", JSON.stringify(cart));
 
-      // עקוב אחרי הוספה לעגלה בפיקסל פייסבוק
-      trackAddToCart(currentPrice || 0, "ILS");
-
       // Call parent callback if provided
       if (onAddToCart) {
         onAddToCart(attractionToAdd);
       }
 
       // Show success message
-      const guestInfo = attraction.guestOptions ? ` (${attraction.guestOptions[selectedGuestOption].label})` : '';
+      const guestInfo = attraction.guestOptions
+        ? ` (${attraction.guestOptions[selectedGuestOption].label})`
+        : "";
       alert(`הוספת ${attraction.name}${guestInfo} לסל הקניות!`);
     },
     [attraction, onAddToCart, selectedGuestOption]
@@ -138,7 +135,7 @@ const Attraction = ({ attraction, onAddToCart, animationDelay = 0 }) => {
         <h3 className="text-xl font-semibold text-white mb-4">
           {attraction.name}
         </h3>
-        
+
         {/* Guest Options Selector */}
         {attraction.guestOptions && attraction.guestOptions.length > 0 && (
           <div className="mb-4">

@@ -6,12 +6,8 @@ import {
   loadCategories,
 } from "../../../lib/data/categoriesAPI";
 import CopyLinkButton from "../../../components/shared/CopyLinkButton";
-import { cache } from "../../../lib/cache/advancedCache";
 import { getCloudinaryUrl } from "../../../lib/cloudinary";
-import {
-  trackCategoryView,
-  trackPageNavigation,
-} from "../../../lib/facebookPixel";
+import { trackCategoryView } from "../../../lib/facebookPixel";
 import Attraction from "../../../components/AttractionComponent";
 import { useState, useEffect } from "react";
 
@@ -107,11 +103,6 @@ export default function CategoryPage({ params }) {
   const categoryImageUrl = currentCategory.image
     ? getCloudinaryUrl(currentCategory.image)
     : "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=500";
-
-  // מעקב אחרי ניווט
-  const handleNavigation = (toPage) => {
-    trackPageNavigation("category", toPage);
-  };
 
   return (
     <div className="min-h-screen bg-black">
@@ -540,7 +531,7 @@ export default function CategoryPage({ params }) {
             עשוי לעניין אותכם גם
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {relatedCategories.map((relatedCategory, index) => (
+            {relatedCategories.map((relatedCategory) => (
               <div
                 key={relatedCategory.id}
                 className="bg-black rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"

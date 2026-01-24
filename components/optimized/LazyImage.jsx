@@ -43,13 +43,8 @@ const LazyImage = ({
     return () => observer.disconnect();
   }, [priority]);
 
-  const {
-    optimizedSrc,
-    srcSet,
-    handleLoad,
-    handleError,
-    blurDataUrl,
-  } = useImageLoader({ src, width, height, quality, format });
+  const { optimizedSrc, srcSet, handleLoad, handleError, blurDataUrl } =
+    useImageLoader({ src, width, height, quality, format });
 
   const handleInternalLoad = () => {
     setIsLoaded(true);
