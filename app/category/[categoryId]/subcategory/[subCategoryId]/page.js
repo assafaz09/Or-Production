@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { categoriesData } from "../../../../../lib/categories";
 import Attraction from "../../../../../components/AttractionComponent";
@@ -11,14 +11,46 @@ export default function SubCategoryPage() {
   const { categoryId, subCategoryId } = params;
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("name");
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentCategory, setCurrentCategory] = useState(null);
+  const [currentSubCategory, setCurrentSubCategory] = useState(null);
 
-  const currentCategory = categoriesData.categories.find(
-    (category) => category.id === categoryId
-  );
+  // Load category and subcategory when params change
+  useEffect(() => {
+    if (!categoryId || !subCategoryId) {
+      return;
+    }
 
-  const currentSubCategory = currentCategory?.subCategories.find(
-    (subCategory) => subCategory.id === subCategoryId
-  );
+    try {
+      const category = categoriesData.categories.find(
+        (cat) => cat.id === categoryId
+      );
+      const subCategory = category?.subCategories?.find(
+        (sub) => sub.id === subCategoryId
+      );
+
+      setCurrentCategory(category || null);
+      setCurrentSubCategory(subCategory || null);
+    } catch (error) {
+      console.error("Error loading subcategory:", error);
+      setCurrentCategory(null);
+      setCurrentSubCategory(null);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [categoryId, subCategoryId]);
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center pt-16">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500 mb-4"></div>
+          <p className="text-white text-lg">טוען תת קטגוריה...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!currentCategory || !currentSubCategory) {
     return (
@@ -35,18 +67,21 @@ export default function SubCategoryPage() {
     );
   }
 
-  const filteredAttractions = currentSubCategory.attractions.filter(
+  // Safe attractions array
+  const attractionsArray = currentSubCategory?.attractions || [];
+
+  const filteredAttractions = attractionsArray.filter(
     (attraction) =>
-      attraction.name.includes(searchTerm) ||
-      attraction.description.includes(searchTerm)
+      attraction?.name?.includes(searchTerm) ||
+      attraction?.description?.includes(searchTerm)
   );
 
   const sortedAttractions = [...filteredAttractions].sort((a, b) => {
     switch (sortBy) {
       case "name":
-        return a.name.localeCompare(b.name);
+        return (a?.name || "").localeCompare(b?.name || "");
       case "price":
-        return a.price - b.price;
+        return (a?.price || 0) - (b?.price || 0);
       default:
         return 0;
     }
