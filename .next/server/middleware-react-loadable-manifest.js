@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST='{"lib\\\\data\\\\categoriesAPI.js -> ../categories.js":{"id":4129,"files":["static/chunks/129-97c65fb901f8219a.js"]}}';
+self.__REACT_LOADABLE_MANIFEST='{"lib\\\\data\\\\categoriesAPI.js -> ../categories.js":{"id":4129,"files":["static/chunks/129-5c45f952a9dafd98.js"]}}';

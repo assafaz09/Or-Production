@@ -82,33 +82,37 @@ export default function AttractionPage() {
     }
 
     // Get existing cart from localStorage
-    const existingCart = localStorage.getItem("cart");
-    const cart = existingCart ? JSON.parse(existingCart) : [];
+    try {
+      const existingCart = localStorage.getItem("cart");
+      const cart = existingCart ? JSON.parse(existingCart) : [];
 
-    // Create unique ID for cart item (includes guest option if applicable)
-    const cartItemId = safeAttraction.guestOptions
-      ? `${safeAttraction.id}_${selectedGuestOption}`
-      : safeAttraction.id;
+      // Create unique ID for cart item (includes guest option if applicable)
+      const cartItemId = safeAttraction.guestOptions
+        ? `${safeAttraction.id}_${selectedGuestOption}`
+        : safeAttraction.id;
 
-    // Check if item already exists in cart
-    const existingItemIndex = cart.findIndex(
-      (item) => (item.cartItemId || item.id) === cartItemId
-    );
+      // Check if item already exists in cart
+      const existingItemIndex = cart.findIndex(
+        (item) => (item.cartItemId || item.id) === cartItemId
+      );
 
-    if (existingItemIndex >= 0) {
-      // Update quantity if item exists
-      cart[existingItemIndex].quantity += quantity;
-    } else {
-      // Add new item to cart
-      cart.push({
-        ...attractionToAdd,
-        cartItemId,
-        quantity: quantity,
-      });
+      if (existingItemIndex >= 0) {
+        // Update quantity if item exists
+        cart[existingItemIndex].quantity += quantity;
+      } else {
+        // Add new item to cart
+        cart.push({
+          ...attractionToAdd,
+          cartItemId,
+          quantity: quantity,
+        });
+      }
+
+      // Save updated cart to localStorage
+      localStorage.setItem("cart", JSON.stringify(cart));
+    } catch (err) {
+      console.error("Failed to update cart:", err);
     }
-
-    // Save updated cart to localStorage
-    localStorage.setItem("cart", JSON.stringify(cart));
 
     // Show success message
     const guestInfo = safeAttraction.guestOptions

@@ -28,16 +28,21 @@ export default function CartPage() {
 
   // Load cart items from localStorage on component mount
   useEffect(() => {
-    const savedCart = localStorage.getItem("cart");
-    if (savedCart) {
-      const parsedCart = JSON.parse(savedCart);
-      setCartItems(parsedCart);
-      calculateTotal(parsedCart);
+    try {
+      const savedCart = localStorage.getItem("cart");
+      if (savedCart) {
+        const parsedCart = JSON.parse(savedCart);
+        setCartItems(parsedCart);
+        calculateTotal(parsedCart);
 
-      // עקוב אחרי התחלת תהליך רכישה
-      if (parsedCart.length > 0) {
-        trackInitiateCheckout(calculateTotal(parsedCart), "ILS");
+        // עקוב אחרי התחלת תהליך רכישה
+        if (parsedCart.length > 0) {
+          trackInitiateCheckout(calculateTotal(parsedCart), "ILS");
+        }
       }
+    } catch (err) {
+      console.error("Failed to load cart from localStorage:", err);
+      setCartItems([]);
     }
   }, []);
 
@@ -55,15 +60,19 @@ export default function CartPage() {
   const updateQuantity = (itemId, newQuantity) => {
     if (newQuantity < 1) return;
 
-    const updatedCart = cartItems.map((item) =>
-      (item.cartItemId || item.id) === itemId
-        ? { ...item, quantity: newQuantity }
-        : item
-    );
+    try {
+      const updatedCart = cartItems.map((item) =>
+        (item.cartItemId || item.id) === itemId
+          ? { ...item, quantity: newQuantity }
+          : item
+      );
 
-    setCartItems(updatedCart);
-    calculateTotal(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
+      setCartItems(updatedCart);
+      calculateTotal(updatedCart);
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+    } catch (err) {
+      console.error("Failed to update cart quantity:", err);
+    }
 
     // Dispatch custom event for cart updates
     window.dispatchEvent(new Event("cartUpdated"));
@@ -71,12 +80,16 @@ export default function CartPage() {
 
   // Remove item
   const removeItem = (itemId) => {
-    const updatedCart = cartItems.filter(
-      (item) => (item.cartItemId || item.id) !== itemId
-    );
-    setCartItems(updatedCart);
-    calculateTotal(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    try {
+      const updatedCart = cartItems.filter(
+        (item) => (item.cartItemId || item.id) !== itemId
+      );
+      setCartItems(updatedCart);
+      calculateTotal(updatedCart);
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+    } catch (err) {
+      console.error("Failed to remove item from cart:", err);
+    }
 
     // Dispatch custom event for cart updates
     window.dispatchEvent(new Event("cartUpdated"));
@@ -84,9 +97,13 @@ export default function CartPage() {
 
   // Clear cart
   const clearCart = () => {
-    setCartItems([]);
-    setTotalPrice(0);
-    localStorage.removeItem("cart");
+    try {
+      setCartItems([]);
+      setTotalPrice(0);
+      localStorage.removeItem("cart");
+    } catch (err) {
+      console.error("Failed to clear cart:", err);
+    }
     window.dispatchEvent(new Event("cartUpdated"));
   };
 
