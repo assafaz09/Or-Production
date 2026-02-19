@@ -1,3 +1,5 @@
+export const viewport = "width=device-width, initial-scale=1";
+
 export const metadata = {
   title: "בלוג OR Productions - מדריכים ועצות לאירועים מושלמים",
   description:

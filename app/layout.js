@@ -3,6 +3,8 @@ import Navbar from "../components/Navbar";
 import WebVitalsTracker from "../components/performance/WebVitalsTracker";
 import Script from "next/script";
 
+export const viewport = "width=device-width, initial-scale=1";
+
 export const metadata = {
   title:
     "OR Productions - אטרקציות לאירועים | השכרת ציוד מקצועי לאירועים בישראל",
@@ -12,7 +14,6 @@ export const metadata = {
     "אטרקציות לאירועים, השכרת ציוד לאירועים,  עמדות צילום, אירועים בישראל, חתונות, בר מצווה, ימי הולדת",
   author: "OR Productions",
   robots: "index, follow",
-  viewport: "width=device-width, initial-scale=1",
   charset: "utf-8",
 
   openGraph: {
