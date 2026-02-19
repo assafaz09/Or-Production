@@ -1,17 +1,17 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
   "/api/quote-request/route": "app/api/quote-request/route.js",
+  "/cart/page": "app/cart/page.js",
+  "/page": "app/page.js",
   "/robots.txt/route": "app/robots.txt/route.js",
   "/terms/page": "app/terms/page.js",
-  "/cart/page": "app/cart/page.js",
   "/testimonials/page": "app/testimonials/page.js",
-  "/page": "app/page.js",
   "/sitemap.xml/route": "app/sitemap.xml/route.js",
   "/attraction/[id]/page": "app/attraction/[id]/page.js",
-  "/category/[categoryId]/page": "app/category/[categoryId]/page.js",
   "/category/[categoryId]/subcategory/[subCategoryId]/page": "app/category/[categoryId]/subcategory/[subCategoryId]/page.js",
+  "/category/[categoryId]/page": "app/category/[categoryId]/page.js",
+  "/blog/how-to-choose-attractions/page": "app/blog/how-to-choose-attractions/page.js",
   "/blog/photo-booths-2025/page": "app/blog/photo-booths-2025/page.js",
   "/blog/page": "app/blog/page.js",
-  "/blog/how-to-choose-attractions/page": "app/blog/how-to-choose-attractions/page.js",
   "/blog/how-to-choose-suppliers/page": "app/blog/how-to-choose-suppliers/page.js"
 }

@@ -320,7 +320,7 @@ export default function AttractionPage() {
                         ) : (
                           <img
                             src={mediaUrl}
-                            alt={`${safeAttraction.name} - תמונה ${index + 1}`}
+                            alt={`${safeAttraction?.name || 'attraction'} - תמונה ${index + 1}`}
                             className="w-full h-full object-cover rounded-lg"
                             onError={(e) => {
                               console.error(
