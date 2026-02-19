@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { getCloudinaryUrl } from "../lib/cloudinary";
 
 const Attraction = ({ attraction, onAddToCart, animationDelay = 0 }) => {
