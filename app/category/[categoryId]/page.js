@@ -511,6 +511,26 @@ export default function CategoryPage({ params }) {
           <h2 className="text-2xl sm:text-3xl font-bold text-white text-center mb-5 mt-7 sm:mb-12 animate-fade-in-up">
             כל האטרקציות בקטגוריה
           </h2>
+          
+          {/* SubCategories Filter */}
+          {currentCategory?.subCategories && currentCategory.subCategories.length > 1 && (
+            <div className="mb-8 flex flex-wrap gap-2 justify-center">
+              {currentCategory.subCategories.map((subCat) => (
+                <button
+                  key={subCat.id}
+                  onClick={() =>
+                    router.push(
+                      `/category/${categoryId}/subcategory/${subCat.id}`
+                    )
+                  }
+                  className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors text-sm sm:text-base"
+                >
+                  {subCat.name}
+                </button>
+              ))}
+            </div>
+          )}
+          
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {allAttractions.map((attraction, index) => (
               <Attraction
