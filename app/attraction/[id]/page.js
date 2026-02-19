@@ -20,29 +20,40 @@ export default function AttractionPage() {
   const attractions = getAllAttractions();
   const attraction = attractions.find((attr) => attr.id === parseInt(id));
 
+  // Ensure attraction has required properties with safe defaults
+  const safeAttraction = attraction ? {
+    ...attraction,
+    images: attraction.images || [],
+    guestOptions: attraction.guestOptions || [],
+    price: attraction.price || 0,
+    name: attraction.name || "אטרקציה",
+    description: attraction.description || "",
+    category: attraction.category || "attraction",
+  } : null;
+
   // Get current price based on guest options
   const getCurrentPrice = () => {
     if (
-      attraction &&
-      attraction.guestOptions &&
-      attraction.guestOptions.length > 0
+      safeAttraction &&
+      safeAttraction.guestOptions &&
+      safeAttraction.guestOptions.length > 0
     ) {
-      return attraction.guestOptions[selectedGuestOption].price;
+      return safeAttraction.guestOptions[selectedGuestOption].price;
     }
-    return attraction ? attraction.price : 0;
+    return safeAttraction ? safeAttraction.price : 0;
   };
 
   // עקוב אחרי צפייה באטרקציה
   useEffect(() => {
-    if (attraction) {
+    if (safeAttraction) {
       trackViewContent(
-        attraction.name,
-        attraction.category || "attraction",
-        attraction.price || 0,
+        safeAttraction.name,
+        safeAttraction.category || "attraction",
+        safeAttraction.price || 0,
         "ILS"
       );
     }
-  }, [attraction]);
+  }, [safeAttraction]);
 
   if (!attraction) {
     return (
@@ -60,11 +71,11 @@ export default function AttractionPage() {
   }
 
   const addToCart = () => {
-    let attractionToAdd = { ...attraction };
+    let attractionToAdd = { ...safeAttraction };
 
     // If guest options exist, add selected option info
-    if (attraction.guestOptions && attraction.guestOptions.length > 0) {
-      const selectedOption = attraction.guestOptions[selectedGuestOption];
+    if (safeAttraction.guestOptions && safeAttraction.guestOptions.length > 0) {
+      const selectedOption = safeAttraction.guestOptions[selectedGuestOption];
       attractionToAdd.selectedGuestOption = selectedOption;
       attractionToAdd.price = selectedOption.price;
       attractionToAdd.guestInfo = selectedOption.label;
@@ -75,9 +86,9 @@ export default function AttractionPage() {
     const cart = existingCart ? JSON.parse(existingCart) : [];
 
     // Create unique ID for cart item (includes guest option if applicable)
-    const cartItemId = attraction.guestOptions
-      ? `${attraction.id}_${selectedGuestOption}`
-      : attraction.id;
+    const cartItemId = safeAttraction.guestOptions
+      ? `${safeAttraction.id}_${selectedGuestOption}`
+      : safeAttraction.id;
 
     // Check if item already exists in cart
     const existingItemIndex = cart.findIndex(
@@ -100,10 +111,10 @@ export default function AttractionPage() {
     localStorage.setItem("cart", JSON.stringify(cart));
 
     // Show success message
-    const guestInfo = attraction.guestOptions
-      ? ` (${attraction.guestOptions[selectedGuestOption].label})`
+    const guestInfo = safeAttraction.guestOptions
+      ? ` (${safeAttraction.guestOptions[selectedGuestOption].label})`
       : "";
-    alert(`הוספת ${quantity} ${attraction.name}${guestInfo} לסל הקניות!`);
+    alert(`הוספת ${quantity} ${safeAttraction.name}${guestInfo} לסל הקניות!`);
 
     // Reset quantity to 1
     setQuantity(1);
@@ -111,13 +122,13 @@ export default function AttractionPage() {
 
   const nextMedia = () => {
     setCurrentMediaIndex((prev) =>
-      prev === attraction.images.length - 1 ? 0 : prev + 1
+      prev === safeAttraction.images.length - 1 ? 0 : prev + 1
     );
   };
 
   const prevMedia = () => {
     setCurrentMediaIndex((prev) =>
-      prev === 0 ? attraction.images.length - 1 : prev - 1
+      prev === 0 ? safeAttraction.images.length - 1 : prev - 1
     );
   };
 
@@ -159,11 +170,11 @@ export default function AttractionPage() {
     return "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=500";
   };
 
-  const currentMediaUrl = attraction.images[currentMediaIndex]
-    ? getMediaUrl(attraction.images[currentMediaIndex])
+  const currentMediaUrl = safeAttraction.images[currentMediaIndex]
+    ? getMediaUrl(safeAttraction.images[currentMediaIndex])
     : "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=500";
 
-  const currentMediaId = attraction.images[currentMediaIndex];
+  const currentMediaId = safeAttraction.images[currentMediaIndex];
   const isCurrentVideo = currentMediaId ? isVideo(currentMediaId) : false;
 
   return (
@@ -180,14 +191,14 @@ export default function AttractionPage() {
             </button>
             <span className="mx-1 sm:mx-2">/</span>
             <button
-              onClick={() => router.push(`/category/${attraction.category}`)}
+              onClick={() => router.push(`/category/${safeAttraction.category}`)}
               className="hover:underline text-center"
             >
-              {attraction.category}
+              {safeAttraction.category}
             </button>
             <span className="mx-1 sm:mx-2">/</span>
             <span className="text-white truncate max-w-32 sm:max-w-none">
-              {attraction.name}
+              {safeAttraction.name}
             </span>
           </div>
         </div>
@@ -210,8 +221,8 @@ export default function AttractionPage() {
                     loop
                     className="w-full h-full object-cover"
                     poster={
-                      attraction.images[0]
-                        ? getMediaUrl(attraction.images[0])
+                      safeAttraction.images[0]
+                        ? getMediaUrl(safeAttraction.images[0])
                         : undefined
                     }
                   >
@@ -220,13 +231,13 @@ export default function AttractionPage() {
                 ) : (
                   <img
                     src={currentMediaUrl}
-                    alt={attraction.name}
+                    alt={safeAttraction.name}
                     className="w-full h-full object-cover"
                   />
                 )}
 
                 {/* Navigation Buttons */}
-                {attraction.images.length > 1 && (
+                {safeAttraction.images.length > 1 && (
                   <>
                     <button
                       onClick={prevMedia}
@@ -269,9 +280,9 @@ export default function AttractionPage() {
               </div>
 
               {/* Thumbnail Navigation */}
-              {attraction.images.length > 1 && (
+              {safeAttraction.images.length > 1 && (
                 <div className="flex space-x-2 rtl:space-x-reverse overflow-x-auto pb-2">
-                  {attraction.images.map((media, index) => {
+                  {safeAttraction.images.map((media, index) => {
                     const isVideoThumb = isVideo(media);
                     const mediaUrl = getMediaUrl(media);
 
@@ -305,7 +316,7 @@ export default function AttractionPage() {
                         ) : (
                           <img
                             src={mediaUrl}
-                            alt={`${attraction.name} - תמונה ${index + 1}`}
+                            alt={`${safeAttraction.name} - תמונה ${index + 1}`}
                             className="w-full h-full object-cover rounded-lg"
                             onError={(e) => {
                               console.error(
@@ -328,10 +339,10 @@ export default function AttractionPage() {
             <div className="space-y-4 sm:space-y-6">
               <div>
                 <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4 leading-tight">
-                  {attraction.name}
+                  {safeAttraction.name}
                 </h1>
                 <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-4 sm:mb-6 leading-relaxed">
-                  {attraction.description}
+                  {safeAttraction.description}
                 </p>
                 <div className="text-2xl sm:text-3xl font-bold text-purple-400 mb-4 sm:mb-6">
                   ₪{getCurrentPrice()}
@@ -339,8 +350,8 @@ export default function AttractionPage() {
               </div>
 
               {/* Guest Options Selector */}
-              {attraction.guestOptions &&
-                attraction.guestOptions.length > 0 && (
+              {safeAttraction.guestOptions &&
+                safeAttraction.guestOptions.length > 0 && (
                   <div className="space-y-3">
                     <label className="block text-lg font-medium text-white">
                       בחר כמות סועדים:
@@ -352,7 +363,7 @@ export default function AttractionPage() {
                       }
                       className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white text-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     >
-                      {attraction.guestOptions.map((option, index) => (
+                      {safeAttraction.guestOptions.map((option, index) => (
                         <option key={index} value={index}>
                           {option.label} - ₪{option.price}
                         </option>
@@ -421,7 +432,7 @@ export default function AttractionPage() {
               <div className="pt-6 border-t border-gray-700">
                 <p className="text-sm text-gray-400">
                   <span className="font-medium">קטגוריה:</span>{" "}
-                  {attraction.category}
+                  {safeAttraction.category}
                 </p>
               </div>
             </div>
@@ -439,8 +450,8 @@ export default function AttractionPage() {
             {attractions
               .filter(
                 (attr) =>
-                  attr.category === attraction.category &&
-                  attr.id !== attraction.id
+                  attr.category === safeAttraction.category &&
+                  attr.id !== safeAttraction.id
               )
               .slice(0, 3)
               .map((relatedAttraction) => (
