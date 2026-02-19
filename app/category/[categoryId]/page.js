@@ -505,6 +505,47 @@ export default function CategoryPage({ params }) {
         </section>
       )}
 
+      {/* SubCategories Section */}
+      {currentCategory?.subCategories && currentCategory.subCategories.length > 0 && (
+        <section className="py-12 sm:py-16 bg-gray-950">
+          <div className="container mx-auto px-4">
+            <h2 className="text-2xl sm:text-3xl font-bold text-white text-center mb-8 sm:mb-12 animate-fade-in-up">
+              תת-קטגוריות
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              {currentCategory.subCategories.map((subCategory) => (
+                <div
+                  key={subCategory.id}
+                  onClick={() =>
+                    router.push(
+                      `/category/${categoryId}/subcategory/${subCategory.id}`
+                    )
+                  }
+                  className="bg-black rounded-lg shadow-lg overflow-hidden hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer"
+                >
+                  <div className="relative h-48 bg-gradient-to-br from-purple-500 to-blue-600">
+                    <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center">
+                      <span className="text-white text-center px-4 font-semibold">
+                        {subCategory.name}
+                      </span>
+                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                  </div>
+                  <div className="p-4 sm:p-6">
+                    <p className="text-gray-300 mb-4 text-sm sm:text-base">
+                      {subCategory.description}
+                    </p>
+                    <button className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition-colors duration-200">
+                      צפה בתת-קטגוריה ({subCategory.attractions?.length || 0})
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* All Attractions Section */}
       <section className="py-12 sm:py-16">
         <div className="container mx-auto px-4">
