@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { getAllAttractions } from "../../../lib/categories";
 import { getCloudinaryUrl } from "../../../lib/cloudinary";
+import { trackViewContent } from "../../../lib/facebookPixel";
 import CopyLinkButton from "../../../components/shared/CopyLinkButton";
 
 // Copy Link Button Component
